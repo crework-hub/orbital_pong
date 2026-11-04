@@ -1,0 +1,8 @@
+.env
+__pycache__/
+*.pyc
+sessions/*.json
+output/*.gif
+history.csv
+records.csv
+bot_flight.log

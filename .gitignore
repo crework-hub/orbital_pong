@@ -1,4 +1,13 @@
-﻿__pycache__/
+__pycache__/
 *.pyc
 pong_score.log
 records.csv
+
+# ЛР 3: бот
+py_bot/.env
+py_bot/sessions/*.json
+py_bot/output/*.gif
+py_bot/bot_flight.log
+py_bot/history.csv
+py_bot/records.csv
+py_bot/.venv/
