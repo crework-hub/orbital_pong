@@ -1,0 +1,12 @@
+{
+  "name": "orbital-pong-core",
+  "version": "1.0.0",
+  "description": "Математическое ядро игры Orbital Pong на JavaScript (ЛР 4)",
+  "type": "module",
+  "main": "js/game.js",
+  "scripts": {
+    "test": "node selftest.js"
+  },
+  "author": "Гакуть М.А., группа 25-СТ",
+  "license": "MIT"
+}

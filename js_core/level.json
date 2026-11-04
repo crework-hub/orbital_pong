@@ -1,0 +1,6 @@
+{
+  "window": { "width": 800, "height": 600 },
+  "black_hole": { "x": 400, "y": 300, "mass": 10 },
+  "paddle_margin": 30,
+  "win_score": 5
+}
