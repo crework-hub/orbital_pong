@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#05060f">
+    <title>Orbital Pong Arcade — правила</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="site-shell">
+        <header class="site-header">
+            <a class="brand" href="index.html">
+                <span class="brand-mark" aria-hidden="true"></span>
+                Orbital Pong Arcade
+            </a>
+            <button class="burger" id="burger" type="button"
+                    aria-expanded="false" aria-controls="site-nav" aria-label="Меню">
+                <span></span>
+            </button>
+            <nav class="site-nav" id="site-nav" aria-label="Основная навигация">
+                <a href="index.html">Аркада</a>
+                <a href="anomalies.html">Аномалии</a>
+                <a href="rules.html" aria-current="page">Правила</a>
+                <a href="../crud/index.html">Админка</a>
+            </nav>
+        </header>
+
+        <main class="site-main">
+            <section class="panel">
+                <h2>Как играть</h2>
+                <p>
+                    Пинг-понг 800×600. В центре поля чёрная дыра: она притягивает мяч,
+                    поэтому он летит по дуге, а не по прямой. Очко получает тот, мимо
+                    чьей ракетки мяч ушёл за край. Партия идёт до 5 очков.
+                </p>
+                <p>
+                    Если мяч пролетает слишком близко к дыре, он падает в неё — тогда розыгрыш
+                    начинается заново, очко никому не начисляется.
+                </p>
+            </section>
+
+            <section class="panel">
+                <h2>Управление</h2>
+                <p><b>Клавиатура:</b> <code>W</code>/<code>S</code> или <code>↑</code>/<code>↓</code> — левая ракетка, <code>Space</code> — новая партия, <code>R</code> — рестарт.</p>
+                <p><b>Мышь:</b> ведите по полю — ракетка идёт за курсором.</p>
+                <p><b>Телефон:</b> свайп вверх-вниз по игровому полю.</p>
+                <p><b>Правая ракетка</b> управляется ИИ: она ведёт за координатой Y мяча.</p>
+            </section>
+
+            <section class="panel">
+                <h2>Физика простыми словами</h2>
+                <p>
+                    Сила притяжения считается по формуле <code>F = G·M/(d² + eps²)</code>,
+                    где <code>d</code> — расстояние до центра. Слагаемое <code>eps²</code>
+                    не даёт силе уйти в бесконечность, когда мяч подлетает вплотную:
+                    максимум силы равен <code>G·M/eps²</code>. Ускорение — это сила, делённая
+                    на массу мяча.
+                </p>
+                <p>
+                    Кольца вокруг дыры рисует сценарий виджета: их прозрачность равна
+                    отношению силы на этом радиусе к максимальной, поэтому ближние кольца
+                    ярче — так видно, где гравитация сильнее.
+                </p>
+            </section>
+        </main>
+
+        <aside class="site-side">
+            <section class="panel">
+                <h2>Быстрый старт</h2>
+                <p>На <a href="index.html">главной</a> партия начинается сама. Хотите поменять силу дыры — кнопки «Масса ±5» или сценарии из консоли.</p>
+                <p><code>OP.run('setMass', 40)</code> — тяжёлая дыра, мяч закручивается.</p>
+                <p><code>OP.run('setVisibility', 200)</code> — узкий обзор.</p>
+            </section>
+            <section class="panel hide-mobile">
+                <h2>Аномалии</h2>
+                <p>Чёрные и белые дыры добавляются в <a href="../crud/index.html">админке</a> и включаются кликом на главной.</p>
+            </section>
+        </aside>
+
+        <footer class="site-footer">
+            <span>Игра — <a href="rules.html">правила</a>, сущности — <a href="anomalies.html">аномалии</a>, редактор — <a href="../crud/index.html">админка</a>.</span>
+            <span>Ядро физики ЛР 4 · виджет ЛР 5 · хранилище ЛР 6 · сайт ЛР 7</span>
+        </footer>
+    </div>
+
+    <script type="module" src="js/rules.js"></script>
+</body>
+</html>

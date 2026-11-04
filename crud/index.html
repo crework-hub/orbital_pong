@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Orbital Pong — Космические аномалии (ЛР 6)</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="top">
+  <div>
+    <h1>🕳️ Orbital Pong — Космические аномалии</h1>
+    <p class="sub">Панель администратора: гравитационные объекты игрового поля · ЛР 6, вариант 15 · Гакуть М.А., 25-СТ</p>
+  </div>
+  <button id="reset" class="btn btn-ghost" type="button">Сбросить к демо-данным</button>
+</header>
+
+<main class="layout">
+  <aside class="side">
+    <section class="card">
+      <h2>Новая аномалия</h2>
+      <form id="add-form" novalidate>
+        <label>Название
+          <input name="name" type="text" placeholder="Например: Дыра Бета" autocomplete="off">
+          <span class="err" data-err="name"></span>
+        </label>
+        <label>Тип
+          <select name="type">
+            <option value="">— выберите —</option>
+            <option value="black">Чёрная дыра (притягивает)</option>
+            <option value="white">Белая дыра (отталкивает)</option>
+          </select>
+          <span class="err" data-err="type"></span>
+        </label>
+        <div class="row2">
+          <label>X (0–800)
+            <input name="x" type="number" step="any" placeholder="400">
+            <span class="err" data-err="x"></span>
+          </label>
+          <label>Y (0–600)
+            <input name="y" type="number" step="any" placeholder="300">
+            <span class="err" data-err="y"></span>
+          </label>
+        </div>
+        <label>Масса (0.1–1000)
+          <input name="mass" type="number" step="any" placeholder="10">
+          <span class="err" data-err="mass"></span>
+        </label>
+        <button class="btn btn-primary" type="submit">Добавить аномалию</button>
+      </form>
+    </section>
+
+    <section class="card">
+      <h2>Превью поля</h2>
+      <canvas id="preview" width="320" height="240"></canvas>
+      <p class="hint">Поле 800×600 в масштабе 2.5:1. Размер — масса, цвет — тип.</p>
+    </section>
+  </aside>
+
+  <section class="card content">
+    <div class="filters">
+      <label class="grow">Поиск по названию
+        <input id="f-search" type="search" placeholder="Начните вводить…">
+      </label>
+      <label>Тип
+        <select id="f-type">
+          <option value="all">Все</option>
+          <option value="black">Чёрные</option>
+          <option value="white">Белые</option>
+        </select>
+      </label>
+      <label class="mass-filter">Минимальная масса
+        <span class="mass-row">
+          <input id="f-mass" type="range" min="0.1" max="1000" step="0.1" value="0.1">
+          <input id="f-mass-num" type="number" min="0.1" max="1000" step="0.1" value="0.1">
+        </span>
+      </label>
+    </div>
+    <p id="counter" class="counter"></p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr>
+          <th>Название</th><th>Тип</th><th>X</th><th>Y</th><th>Масса</th><th>Дата</th><th>Действия</th>
+        </tr></thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+  </section>
+</main>
+
+<section class="card howto">
+  <h2>Как проверить</h2>
+  <ol>
+    <li>Откройте страницу — в таблице 2 демо-аномалии.</li>
+    <li>Введите массу 5000 и нажмите «Добавить» — появится ошибка, запись не создастся.</li>
+    <li>Исправьте массу на 50 — запись появится в таблице и на превью.</li>
+    <li>Нажмите «Изменить», поменяйте массу, «Сохранить» — значение обновится.</li>
+    <li>Сдвиньте ползунок массы — счётчик «Показано N из M» уменьшится.</li>
+    <li>Удалите запись, перезагрузите страницу (F5) и проверьте DevTools → Application → Local Storage → <code>orbital_pong_anomalies</code>.</li>
+  </ol>
+</section>
+
+<div id="toast" class="toast" role="status"></div>
+<script type="module" src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,370 @@
+/* Оформление виджета Orbital Pong. Тёмная тема, никаких внешних шрифтов. */
+
+:root {
+    --bg: #05060d;
+    --panel: rgba(14, 19, 34, 0.82);
+    --panel-border: rgba(90, 140, 220, 0.22);
+    --text: #e7eefc;
+    --muted: #93a4c4;
+    --accent: #4fc3ff;
+    --accent-2: #ff5fa8;
+    --warn: #ffd24d;
+    --mono: "Courier New", Courier, monospace;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    min-height: 100vh;
+    background:
+        radial-gradient(circle at 15% 0%, rgba(60, 40, 130, 0.35), transparent 45%),
+        radial-gradient(circle at 85% 100%, rgba(10, 90, 130, 0.28), transparent 50%),
+        var(--bg);
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.app {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 24px 20px 40px;
+}
+
+/* ---------------------------------------------------------------- */
+/* Шапка                                                             */
+/* ---------------------------------------------------------------- */
+
+.app__header {
+    margin-bottom: 18px;
+}
+
+.app__header h1 {
+    margin: 0;
+    font-size: 30px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    background: linear-gradient(90deg, var(--accent), #b98bff 55%, var(--accent-2));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.app__subtitle {
+    margin: 4px 0 0;
+    color: var(--muted);
+    font-size: 12px;
+    letter-spacing: 0.04em;
+}
+
+/* ---------------------------------------------------------------- */
+/* Сетка: холст слева, панели справа                                 */
+/* ---------------------------------------------------------------- */
+
+.layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 300px;
+    gap: 18px;
+    align-items: start;
+}
+
+.stage {
+    min-width: 0;
+}
+
+canvas#game {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 3;          /* внутреннее разрешение строго 800×600 */
+    border-radius: 14px;
+    border: 1px solid rgba(90, 160, 255, 0.28);
+    box-shadow:
+        0 0 0 1px rgba(0, 0, 0, 0.6),
+        0 18px 50px rgba(0, 0, 0, 0.65),
+        0 0 60px rgba(50, 130, 220, 0.14);
+    background: #04050c;
+    cursor: crosshair;
+}
+
+.stage__footer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 14px;
+    margin-top: 10px;
+    color: var(--muted);
+    font-size: 11px;
+}
+
+.hint {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    white-space: nowrap;
+}
+
+kbd {
+    display: inline-block;
+    min-width: 18px;
+    padding: 1px 5px;
+    border: 1px solid var(--panel-border);
+    border-bottom-width: 2px;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 10px;
+    text-align: center;
+}
+
+/* ---------------------------------------------------------------- */
+/* Панели                                                            */
+/* ---------------------------------------------------------------- */
+
+.side {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    min-width: 0;
+}
+
+.panel {
+    padding: 14px;
+    border: 1px solid var(--panel-border);
+    border-radius: 12px;
+    background: var(--panel);
+    backdrop-filter: blur(6px);
+}
+
+.panel__title {
+    margin: 0 0 10px;
+    font-size: 12px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent);
+}
+
+.panel__subtitle {
+    margin: 14px 0 6px;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+}
+
+/* ---------------------------------------------------------------- */
+/* HUD                                                               */
+/* ---------------------------------------------------------------- */
+
+.hud {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.hud__row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 10px;
+    padding-bottom: 5px;
+    border-bottom: 1px dashed rgba(90, 140, 220, 0.14);
+}
+
+.hud__row:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.hud dt {
+    color: var(--muted);
+    font-size: 11px;
+}
+
+.hud dd {
+    margin: 0;
+    font-size: 15px;
+    font-variant-numeric: tabular-nums;
+    color: var(--text);
+}
+
+.hud dd small {
+    color: var(--muted);
+    font-size: 9px;
+}
+
+#hud-state {
+    font-weight: bold;
+    letter-spacing: 0.08em;
+}
+
+#hud-state[data-state="PLAY"] {
+    color: #5dffa8;
+}
+
+#hud-state[data-state="OVER"] {
+    color: #ff6b81;
+}
+
+#hud-state[data-state="MENU"] {
+    color: #59b7ff;
+}
+
+/* ---------------------------------------------------------------- */
+/* Кнопки сценариев                                                  */
+/* ---------------------------------------------------------------- */
+
+.buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+}
+
+.buttons button {
+    padding: 7px 8px;
+    border: 1px solid rgba(90, 160, 255, 0.28);
+    border-radius: 7px;
+    background: rgba(30, 50, 90, 0.5);
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 11px;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s, transform 0.08s;
+}
+
+.buttons button:hover {
+    background: rgba(60, 110, 190, 0.55);
+    border-color: rgba(120, 200, 255, 0.6);
+}
+
+.buttons button:active {
+    transform: translateY(1px);
+    background: rgba(80, 150, 240, 0.7);
+}
+
+.buttons button:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 1px;
+}
+
+.console-hint {
+    margin: 10px 0 0;
+    color: var(--muted);
+    font-size: 10px;
+    line-height: 1.7;
+}
+
+.console-hint code {
+    color: var(--warn);
+    font-size: 10px;
+}
+
+/* ---------------------------------------------------------------- */
+/* Лог сценариев                                                     */
+/* ---------------------------------------------------------------- */
+
+.log {
+    margin: 0;
+    height: 168px;
+    overflow-y: auto;
+    padding: 8px;
+    border: 1px solid rgba(90, 140, 220, 0.16);
+    border-radius: 8px;
+    background: rgba(3, 6, 14, 0.85);
+    color: #b9cdea;
+    font-family: var(--mono);
+    font-size: 10px;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.log-line {
+    animation: log-in 0.22s ease-out;
+}
+
+.log-error {
+    color: #ff8fa3;
+}
+
+@keyframes log-in {
+    from {
+        opacity: 0;
+        transform: translateX(-4px);
+    }
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+.log::-webkit-scrollbar {
+    width: 6px;
+}
+
+.log::-webkit-scrollbar-thumb {
+    background: rgba(90, 140, 220, 0.35);
+    border-radius: 3px;
+}
+
+/* ---------------------------------------------------------------- */
+/* Подвал                                                            */
+/* ---------------------------------------------------------------- */
+
+.app__footer {
+    margin-top: 22px;
+    color: var(--muted);
+    font-size: 10px;
+    text-align: center;
+}
+
+.app__footer code {
+    color: rgba(180, 210, 255, 0.8);
+}
+
+/* ---------------------------------------------------------------- */
+/* Узкие экраны: одна колонка                                        */
+/* ---------------------------------------------------------------- */
+
+@media (max-width: 900px) {
+    .layout {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    canvas#game {
+        aspect-ratio: 4 / 3;
+    }
+
+    .buttons {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+
+    .log {
+        height: 130px;
+    }
+}
+
+@media (max-width: 560px) {
+    .app {
+        padding: 14px 10px 28px;
+    }
+
+    .app__header h1 {
+        font-size: 22px;
+    }
+
+    .buttons {
+        grid-template-columns: 1fr 1fr;
+    }
+}

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#05060f">
+    <title>Orbital Pong Arcade — играть</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="site-shell">
+        <header class="site-header">
+            <a class="brand" href="index.html">
+                <span class="brand-mark" aria-hidden="true"></span>
+                Orbital Pong Arcade
+            </a>
+
+            <button class="burger" id="burger" type="button"
+                    aria-expanded="false" aria-controls="site-nav" aria-label="Меню">
+                <span></span>
+            </button>
+
+            <nav class="site-nav" id="site-nav" aria-label="Основная навигация">
+                <a href="index.html" aria-current="page">Аркада</a>
+                <a href="anomalies.html">Аномалии</a>
+                <a href="rules.html">Правила</a>
+                <a href="../crud/index.html">Админка</a>
+            </nav>
+        </header>
+
+        <main class="site-main">
+            <section class="arena" id="arena" aria-label="Игровое поле">
+                <canvas id="game" width="800" height="600">
+                    Ваш браузер не поддерживает Canvas — обновите его.
+                </canvas>
+            </section>
+
+            <section class="panel hud" aria-label="Показатели партии">
+                <div class="hud-card">
+                    <span class="hud-label">Скорость мяча</span>
+                    <span class="hud-value" id="speed-value">0.00</span>
+                    <div class="speed-bar" id="speed-bar"><span></span></div>
+                </div>
+                <div class="hud-card">
+                    <span class="hud-label">Счёт</span>
+                    <span class="hud-value" id="score-value">0 : 0</span>
+                </div>
+                <div class="hud-card">
+                    <span class="hud-label">Состояние</span>
+                    <span class="pill" id="state-pill" data-state="MENU">МЕНЮ</span>
+                    <div class="hud-hint" id="state-hint">Пробел — начать партию</div>
+                </div>
+                <div class="hud-card">
+                    <span class="hud-label">Масса дыры</span>
+                    <span class="hud-value" id="mass-value">10</span>
+                </div>
+                <div class="hud-card hide-mobile">
+                    <span class="hud-label">Кадры</span>
+                    <span class="hud-value" id="fps-value">0</span>
+                </div>
+            </section>
+
+            <section class="panel hide-mobile" aria-label="Управление">
+                <h2>Управление</h2>
+                <div class="btn-row">
+                    <button class="btn btn-primary" id="start-btn" type="button">Новая партия</button>
+                    <button class="btn" id="mass-down" type="button">Масса −5</button>
+                    <button class="btn" id="mass-up" type="button">Масса +5</button>
+                    <button class="btn" id="rings-btn" type="button">Кольца: вкл</button>
+                </div>
+                <p>
+                    Левая ракетка — <code>W</code>/<code>S</code>, стрелки или мышь; на телефоне — свайп по полю.
+                    Правая ракетка играет сама: ведёт за мячом по вертикали.
+                    Из консоли работают сценарии виджета: <code>OP.run('setMass', 25)</code>.
+                </p>
+            </section>
+        </main>
+
+        <aside class="site-side">
+            <section class="panel">
+                <h2>Аномалии на поле</h2>
+                <p>Карточки берутся из админки (localStorage). Клик по карточке включает аномалию в физике: чёрная притягивает, белая отталкивает.</p>
+                <div class="hotbar" id="hotbar" aria-label="Выбор аномалий"></div>
+                <p class="hud-hint" id="hotbar-hint"></p>
+            </section>
+
+            <section class="panel hide-mobile">
+                <h2>Журнал сценариев</h2>
+                <pre class="log" id="scenario-log" aria-live="polite"></pre>
+            </section>
+        </aside>
+
+        <footer class="site-footer">
+            <span>Игра — <a href="rules.html">правила</a>, сущности — <a href="anomalies.html">аномалии</a>, редактор — <a href="../crud/index.html">админка</a>.</span>
+            <span>Ядро физики ЛР 4 · виджет ЛР 5 · хранилище ЛР 6 · сайт ЛР 7</span>
+        </footer>
+    </div>
+
+    <script type="module" src="js/main.js"></script>
+</body>
+</html>

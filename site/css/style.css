@@ -1,0 +1,848 @@
+/* Orbital Pong Arcade — общий стиль сайта (ЛР 7).
+   Каркас — CSS Grid, панели — Flexbox, оформление — glassmorphism. */
+
+:root {
+    --bg-0: #05060f;
+    --bg-1: #0b1030;
+    --bg-2: #171a45;
+    --ink: #e8ecff;
+    --ink-dim: #9aa4cc;
+    --accent: #4fd1ff;
+    --accent-2: #ff5fa2;
+    --accent-3: #ffd166;
+    --glass: rgba(20, 26, 60, 0.55);
+    --glass-strong: rgba(14, 18, 44, 0.78);
+    --line: rgba(140, 170, 255, 0.22);
+    --radius: 16px;
+    --shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    min-height: 100vh;
+    font-family: "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+    color: var(--ink);
+    background:
+        radial-gradient(900px 600px at 15% -10%, rgba(79, 209, 255, 0.18), transparent 60%),
+        radial-gradient(800px 500px at 90% 0%, rgba(255, 95, 162, 0.16), transparent 60%),
+        radial-gradient(1000px 700px at 50% 120%, rgba(120, 90, 255, 0.22), transparent 60%),
+        linear-gradient(160deg, var(--bg-0), var(--bg-1) 45%, var(--bg-2));
+    background-attachment: fixed;
+}
+
+/* ---------- Каркас страницы: Grid ---------- */
+
+.site-shell {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    grid-template-columns: minmax(0, 1fr) 320px;
+    grid-template-areas:
+        "header header"
+        "main   side"
+        "footer footer";
+    gap: 18px;
+    min-height: 100vh;
+    padding: 18px;
+    max-width: 1440px;
+    margin: 0 auto;
+}
+
+.site-header { grid-area: header; }
+.site-main { grid-area: main; }
+.site-side { grid-area: side; }
+.site-footer { grid-area: footer; }
+
+/* ---------- Шапка и навигация ---------- */
+
+.site-header {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 12px 18px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--glass);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    box-shadow: var(--shadow);
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    text-decoration: none;
+    color: var(--ink);
+    white-space: nowrap;
+}
+
+.brand-mark {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 50% 50%, #000 42%, var(--accent) 46%, transparent 70%);
+    box-shadow: 0 0 18px rgba(79, 209, 255, 0.6);
+}
+
+.site-nav {
+    display: flex;
+    gap: 6px;
+    margin-left: auto;
+    flex-wrap: wrap;
+}
+
+.site-nav a {
+    padding: 8px 14px;
+    border-radius: 999px;
+    text-decoration: none;
+    color: var(--ink-dim);
+    font-size: 0.95rem;
+    border: 1px solid transparent;
+    transition: color 0.15s, border-color 0.15s, background 0.15s;
+}
+
+.site-nav a:hover {
+    color: var(--ink);
+    border-color: var(--line);
+    background: rgba(120, 160, 255, 0.1);
+}
+
+.site-nav a[aria-current="page"] {
+    color: #04101f;
+    background: linear-gradient(120deg, var(--accent), #8ef0ff);
+    font-weight: 600;
+}
+
+/* Бургер */
+
+.burger {
+    display: none;
+    width: 42px;
+    height: 42px;
+    margin-left: auto;
+    padding: 0;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--glass-strong);
+    cursor: pointer;
+}
+
+.burger span,
+.burger span::before,
+.burger span::after {
+    display: block;
+    width: 20px;
+    height: 2px;
+    background: var(--ink);
+    border-radius: 2px;
+    transition: transform 0.2s, opacity 0.2s;
+}
+
+.burger span {
+    position: relative;
+    margin: 0 auto;
+}
+
+.burger span::before,
+.burger span::after {
+    content: "";
+    position: absolute;
+    left: 0;
+}
+
+.burger span::before { top: -6px; }
+.burger span::after { top: 6px; }
+
+.burger[aria-expanded="true"] span { background: transparent; }
+.burger[aria-expanded="true"] span::before { transform: translateY(6px) rotate(45deg); }
+.burger[aria-expanded="true"] span::after { transform: translateY(-6px) rotate(-45deg); }
+
+/* ---------- Колонки ---------- */
+
+.site-main,
+.site-side {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    min-width: 0;
+}
+
+.panel {
+    padding: 16px 18px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--glass);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    box-shadow: var(--shadow);
+}
+
+.panel h2,
+.panel h3 {
+    margin: 0 0 10px;
+    font-size: 1.05rem;
+    letter-spacing: 0.01em;
+}
+
+.panel p {
+    margin: 0 0 10px;
+    color: var(--ink-dim);
+    line-height: 1.55;
+}
+
+.panel p:last-child {
+    margin-bottom: 0;
+}
+
+/* ---------- Игровая зона ---------- */
+
+.arena {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    padding: 12px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: linear-gradient(180deg, rgba(6, 8, 24, 0.85), rgba(10, 14, 38, 0.72));
+    box-shadow: var(--shadow), inset 0 0 60px rgba(79, 209, 255, 0.08);
+}
+
+.arena canvas {
+    display: block;
+    width: 100%;
+    max-width: 800px;
+    aspect-ratio: 4 / 3;
+    height: auto;
+    border-radius: 12px;
+    touch-action: none;      /* свайпы не скроллят страницу */
+    cursor: crosshair;
+}
+
+/* ---------- HUD ---------- */
+
+.hud {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.hud-card {
+    flex: 1 1 130px;
+    min-width: 110px;
+    padding: 10px 12px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--glass-strong);
+}
+
+.hud-label {
+    display: block;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ink-dim);
+    margin-bottom: 4px;
+}
+
+.hud-value {
+    font-size: 1.25rem;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+}
+
+.hud-value.is-hot {
+    color: var(--accent-2);
+}
+
+/* Полоса скорости мяча: вид меняется в реальном времени */
+
+.speed-bar {
+    position: relative;
+    height: 8px;
+    margin-top: 8px;
+    border-radius: 999px;
+    background: rgba(120, 160, 255, 0.16);
+    overflow: hidden;
+}
+
+.speed-bar span {
+    display: block;
+    height: 100%;
+    width: 0;
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--accent), var(--accent-3));
+    transition: width 0.12s linear, background 0.3s;
+}
+
+.speed-bar.is-danger span {
+    background: linear-gradient(90deg, var(--accent-3), var(--accent-2));
+}
+
+/* Состояние партии как «пилюля» */
+
+.pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    background: rgba(120, 160, 255, 0.16);
+    color: var(--ink);
+}
+
+.pill::before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: currentColor;
+    box-shadow: 0 0 10px currentColor;
+}
+
+.pill[data-state="PLAY"] {
+    color: #7dffb0;
+    background: rgba(125, 255, 176, 0.14);
+}
+
+.pill[data-state="OVER"] {
+    color: #ff8fb8;
+    background: rgba(255, 143, 184, 0.14);
+}
+
+.pill[data-state="MENU"] {
+    color: var(--accent);
+    background: rgba(79, 209, 255, 0.14);
+}
+
+/* ---------- Кнопки ---------- */
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 16px;
+    border-radius: 12px;
+    border: 1px solid var(--line);
+    background: var(--glass-strong);
+    color: var(--ink);
+    font: inherit;
+    font-size: 0.92rem;
+    cursor: pointer;
+    transition: transform 0.12s, border-color 0.15s, background 0.15s;
+}
+
+.btn:hover {
+    border-color: var(--accent);
+    background: rgba(79, 209, 255, 0.12);
+}
+
+.btn:active {
+    transform: translateY(1px);
+}
+
+.btn-primary {
+    color: #04101f;
+    font-weight: 700;
+    border-color: transparent;
+    background: linear-gradient(120deg, var(--accent), #8ef0ff);
+}
+
+.btn-primary:hover {
+    background: linear-gradient(120deg, #8ef0ff, var(--accent));
+}
+
+.btn-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+/* ---------- Хотбар аномалий (из CRUD) ---------- */
+
+.hotbar {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    scrollbar-width: thin;
+}
+
+.anomaly-card {
+    flex: 0 0 auto;
+    width: 132px;
+    padding: 10px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--glass-strong);
+    color: var(--ink);
+    text-align: left;
+    font: inherit;
+    cursor: pointer;
+    transition: border-color 0.15s, transform 0.12s, box-shadow 0.15s;
+}
+
+.anomaly-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--accent);
+}
+
+.anomaly-card.is-selected {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 1px var(--accent), 0 0 24px rgba(79, 209, 255, 0.28);
+}
+
+.anomaly-card .dot {
+    display: block;
+    width: 30px;
+    height: 30px;
+    margin-bottom: 8px;
+    border-radius: 50%;
+}
+
+.anomaly-card[data-type="black"] .dot {
+    background: radial-gradient(circle at 50% 50%, #000 46%, rgba(120, 90, 255, 0.9) 52%, transparent 72%);
+}
+
+.anomaly-card[data-type="white"] .dot {
+    background: radial-gradient(circle at 50% 50%, #fff 30%, rgba(140, 230, 255, 0.9) 52%, transparent 74%);
+}
+
+.anomaly-card .name {
+    display: block;
+    font-size: 0.86rem;
+    font-weight: 600;
+    line-height: 1.25;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+.anomaly-card .meta {
+    display: block;
+    margin-top: 6px;
+    font-size: 0.74rem;
+    color: var(--ink-dim);
+}
+
+.empty-note {
+    padding: 12px 14px;
+    border: 1px dashed var(--line);
+    border-radius: 12px;
+    color: var(--ink-dim);
+    font-size: 0.88rem;
+}
+
+/* ---------- Страница инвентаря ---------- */
+
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 14px;
+}
+
+.anomaly-tile {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 14px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--glass-strong);
+    transition: border-color 0.15s, transform 0.12s;
+}
+
+.anomaly-tile:hover {
+    transform: translateY(-2px);
+    border-color: var(--accent);
+}
+
+.anomaly-tile h3 {
+    margin: 0;
+    font-size: 1rem;
+}
+
+.anomaly-tile .tile-visual {
+    height: 74px;
+    border-radius: 10px;
+    background:
+        radial-gradient(circle at 30% 40%, rgba(255, 255, 255, 0.16), transparent 60%),
+        #070a1c;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+}
+
+.anomaly-tile .glyph {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.anomaly-tile[data-type="black"] .glyph {
+    background: radial-gradient(circle at 50% 50%, #000 44%, #7a5cff 52%, transparent 76%);
+    box-shadow: 0 0 26px rgba(122, 92, 255, 0.55);
+}
+
+.anomaly-tile[data-type="white"] .glyph {
+    background: radial-gradient(circle at 50% 50%, #fff 34%, #9fe8ff 54%, transparent 78%);
+    box-shadow: 0 0 26px rgba(159, 232, 255, 0.5);
+}
+
+.tile-facts {
+    display: flex;
+    gap: 12px;
+    font-size: 0.82rem;
+    color: var(--ink-dim);
+}
+
+.tile-facts b {
+    color: var(--ink);
+    font-weight: 600;
+}
+
+.site-footer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 20px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 18px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--glass);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    color: var(--ink-dim);
+    font-size: 0.85rem;
+}
+
+.site-footer a {
+    color: var(--accent);
+    text-decoration: none;
+}
+
+.site-footer a:hover {
+    text-decoration: underline;
+}
+
+/* ---------- Адаптивность ---------- */
+
+@media (max-width: 1080px) {
+    .site-shell {
+        grid-template-columns: minmax(0, 1fr) 280px;
+    }
+}
+
+/* ---------- Планшет и телефон ---------- */
+
+@media (max-width: 880px) {
+    /* Каркас: одна колонка, фиксированная высота экрана и запрет прокрутки —
+       требование ЛР 7: игровое поле занимает всё доступное место. */
+    body {
+        overflow: hidden;
+    }
+
+    .site-shell {
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-rows: auto auto minmax(0, 1fr) auto;
+        grid-template-areas:
+            "header"
+            "nav"
+            "main"
+            "side";
+        gap: 10px;
+        height: 100dvh;
+        min-height: 0;
+        padding: 8px;
+        overflow: hidden;
+    }
+
+    .site-header {
+        flex-wrap: wrap;
+        padding: 8px 12px;
+    }
+
+    .burger {
+        display: block;
+    }
+
+    /* Верхняя навигация сворачивается в бургер */
+    .site-nav {
+        grid-area: nav;
+        display: none;
+        flex-direction: column;
+        gap: 4px;
+        margin: 0;
+        padding: 10px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: var(--glass-strong);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        max-height: 50dvh;
+        overflow-y: auto;
+    }
+
+    .site-nav.is-open {
+        display: flex;
+    }
+
+    .site-nav a {
+        padding: 10px 14px;
+        border-radius: 10px;
+    }
+
+    .site-main {
+        min-height: 0;
+        gap: 8px;
+    }
+
+    /* Поле тянется на всё свободное место, сохраняя пропорции 4:3 */
+    .arena {
+        flex: 1 1 auto;
+        min-height: 0;
+        padding: 4px;
+        align-items: center;
+    }
+
+    /* Холст вписывается в свободное место целиком, сохраняя пропорции 4:3:
+       собственный размер 800×600 плюс оба max-* — браузер сам подбирает масштаб. */
+    .arena canvas {
+        width: auto;
+        height: auto;
+        max-width: 100%;
+        max-height: 100%;
+        aspect-ratio: 4 / 3;
+    }
+
+    .hud {
+        flex: 0 0 auto;
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 6px;
+    }
+
+    .hud-card {
+        min-width: 0;
+        padding: 6px 8px;
+    }
+
+    .hud-label {
+        font-size: 0.62rem;
+        letter-spacing: 0.04em;
+        margin-bottom: 2px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .hud-value {
+        font-size: 1rem;
+    }
+
+    .speed-bar {
+        height: 5px;
+        margin-top: 4px;
+    }
+
+    /* Подсказку под состоянием на телефоне прячем — она дублирует управление.
+       Базовое правило .hud-hint стоит ниже в файле, поэтому нужен более
+       точный селектор. */
+    .hud .hud-hint {
+        display: none;
+    }
+
+
+    /* Второстепенное скрываем: журнал, правила, подвал */
+    .site-side {
+        min-height: 0;
+        overflow: hidden;
+    }
+
+    .site-side .panel:not(:first-child),
+    .site-footer,
+    .hide-mobile {
+        display: none !important;
+    }
+
+    .site-side .panel {
+        padding: 8px 10px;
+    }
+
+    .site-side .panel h2 {
+        font-size: 0.82rem;
+        margin-bottom: 6px;
+    }
+
+    .site-side .panel > p {
+        display: none;
+    }
+
+    .hotbar {
+        gap: 8px;
+    }
+
+    .anomaly-card {
+        width: 104px;
+        padding: 8px;
+    }
+
+    .anomaly-card .dot {
+        width: 22px;
+        height: 22px;
+        margin-bottom: 5px;
+    }
+
+    .anomaly-card .name {
+        font-size: 0.76rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: block;
+    }
+
+}
+
+/* Телефон в горизонтальной ориентации (мало высоты): второстепенное —
+   панель аномалий и журнал — убираем совсем, а поле отдаём всё свободное
+   место, иначе холст сжимается до нескольких десятков пикселей. */
+@media (max-width: 880px) and (max-height: 560px) {
+    .site-shell {
+        grid-template-rows: auto minmax(0, 1fr);
+        grid-template-areas:
+            "header"
+            "main";
+        gap: 6px;
+        padding: 6px;
+    }
+
+    .site-header {
+        padding: 6px 10px;
+    }
+
+    .site-side {
+        display: none;
+    }
+
+    .hud {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 5px;
+    }
+
+    .hud-card {
+        padding: 4px 8px;
+    }
+
+    .hud-label {
+        font-size: 0.58rem;
+    }
+
+    .hud-value {
+        font-size: 0.9rem;
+    }
+
+    .speed-bar {
+        height: 4px;
+        margin-top: 2px;
+    }
+}
+
+@media (max-width: 560px) {
+    .site-shell {
+        gap: 8px;
+        padding: 6px;
+    }
+
+    .panel {
+        padding: 10px 12px;
+    }
+
+    .hud {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .hud-card:nth-child(5) {
+        display: none;      /* кадры на маленьком экране не нужны */
+    }
+
+    .cards-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        transition: none !important;
+    }
+}
+
+/* ---------- Мелкие элементы панелей ---------- */
+
+.hud-hint {
+    display: block;
+    margin-top: 6px;
+    font-size: 0.76rem;
+    line-height: 1.4;
+    color: var(--ink-dim);
+}
+
+.log {
+    max-height: 220px;
+    min-height: 84px;
+    margin: 0;
+    padding: 10px 12px;
+    overflow-y: auto;
+    border-radius: 12px;
+    background: rgba(4, 6, 18, 0.72);
+    border: 1px solid var(--line);
+    font-family: "Consolas", "Menlo", monospace;
+    font-size: 0.76rem;
+    line-height: 1.5;
+    color: #b9c6f2;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+.log-line {
+    display: block;
+}
+
+.log-error {
+    color: #ff9ab4;
+}
+
+code {
+    padding: 1px 5px;
+    border-radius: 6px;
+    background: rgba(120, 160, 255, 0.14);
+    font-family: "Consolas", "Menlo", monospace;
+    font-size: 0.86em;
+}
+
+.panel a {
+    color: var(--accent);
+    text-decoration: none;
+}
+
+.panel a:hover {
+    text-decoration: underline;
+}
+
+.panel b {
+    color: var(--ink);
+}

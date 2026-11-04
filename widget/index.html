@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Orbital Pong — виджет ЛР 5</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="app">
+        <header class="app__header">
+            <h1>Orbital Pong</h1>
+            <p class="app__subtitle">
+                Лабораторная работа № 5 · Canvas + ES-модули · вариант 15
+            </p>
+        </header>
+
+        <main class="layout">
+            <section class="stage" aria-label="Игровое поле">
+                <canvas id="game" width="800" height="600">
+                    Ваш браузер не поддерживает Canvas.
+                </canvas>
+
+                <div class="stage__footer">
+                    <span class="hint"><kbd>W</kbd><kbd>↑</kbd> вверх</span>
+                    <span class="hint"><kbd>S</kbd><kbd>↓</kbd> вниз</span>
+                    <span class="hint"><kbd>Space</kbd> старт</span>
+                    <span class="hint"><kbd>R</kbd> рестарт</span>
+                    <span class="hint">мышь — равноправна с клавишами</span>
+                </div>
+            </section>
+
+            <aside class="side">
+                <section class="panel">
+                    <h2 class="panel__title">Показатели</h2>
+                    <dl class="hud">
+                        <div class="hud__row">
+                            <dt>Скорость мяча</dt>
+                            <dd><span id="hud-speed">0.00</span> <small>px/кадр</small></dd>
+                        </div>
+                        <div class="hud__row">
+                            <dt>Счёт</dt>
+                            <dd><span id="hud-score">0 : 0</span></dd>
+                        </div>
+                        <div class="hud__row">
+                            <dt>Состояние</dt>
+                            <dd><span id="hud-state" data-state="MENU">МЕНЮ</span></dd>
+                        </div>
+                        <div class="hud__row">
+                            <dt>Масса дыры</dt>
+                            <dd><span id="hud-mass">10</span></dd>
+                        </div>
+                        <div class="hud__row">
+                            <dt>Сила гравитации</dt>
+                            <dd><span id="hud-gravity">0.00</span> <small>у мяча</small></dd>
+                        </div>
+                        <div class="hud__row">
+                            <dt>Кадры</dt>
+                            <dd><span id="hud-fps">0</span> <small>fps</small></dd>
+                        </div>
+                    </dl>
+                </section>
+
+                <section class="panel">
+                    <h2 class="panel__title">Сценарии</h2>
+
+                    <div class="buttons">
+                        <button type="button" data-scenario="restart">Новая партия</button>
+                        <button type="button" data-scenario="setMass" data-arg="25">Масса 25</button>
+                        <button type="button" data-scenario="setMass" data-arg="2">Масса 2</button>
+                        <button type="button" data-scenario="setVisibility" data-arg="200">Видимость 200</button>
+                        <button type="button" data-scenario="setVisibility" data-arg="800">Видимость 800</button>
+                        <button type="button" data-scenario="toggleRings">Кольца</button>
+                        <button type="button" data-scenario="slowMotion" data-arg="0.5">Время ×0.5</button>
+                        <button type="button" data-scenario="slowMotion" data-arg="1">Время ×1</button>
+                        <button type="button" data-scenario="fastBall" data-arg="2">Ускорить мяч</button>
+                        <button type="button" data-scenario="freezeBall">Отпустить мяч</button>
+                        <button type="button" data-scenario="spawnAnomaly" data-arg="white,200,180,8">Аномалия</button>
+                        <button type="button" data-scenario="toggleAI">Автопилот</button>
+                        <button type="button" data-scenario="showEvents">Показать события</button>
+                    </div>
+
+                    <p class="console-hint">
+                        Из консоли: <code>OP.run('setMass', 25)</code>,
+                        <code>OP.list()</code>, <code>OP.info()</code>
+                    </p>
+
+                    <h3 class="panel__subtitle">Лог сценариев</h3>
+                    <pre id="scenario-log" class="log" aria-live="polite"></pre>
+                </section>
+            </aside>
+        </main>
+
+        <footer class="app__footer">
+            Ядро физики — <code>js_core/js/game.js</code> (ЛР 4).
+            Цикл — <code>widget/js/engine.js</code>,
+            страница — <code>widget/js/widget.js</code> (ЛР 5).
+            Внешних библиотек нет.
+        </footer>
+    </div>
+
+    <script type="module" src="js/widget.js"></script>
+</body>
+</html>

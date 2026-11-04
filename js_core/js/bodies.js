@@ -31,9 +31,11 @@ export class Ball {
      * Один шаг физики.
      * @param {number} mass масса чёрной дыры
      * @param {{x:number, y:number}} hole центр дыры
+     * @param {Array<{x:number,y:number,mass:number,type:string}>} anomalies
+     *        дополнительные аномалии: типа 'black' притягивают, 'white' отталкивают
      * @returns {boolean} отскочил ли мяч от стены
      */
-    update(mass, hole) {
+    update(mass, hole, anomalies = []) {
         const prevX = this.x;
         const prevY = this.y;
         const prevAngle = Math.atan2(this.y - hole.y, this.x - hole.x);
@@ -41,6 +43,14 @@ export class Ball {
         const a = gravityAcceleration(this.x, this.y, hole.x, hole.y, mass);
         this.vx += a.x;
         this.vy += a.y;
+
+        // Дополнительные аномалии (ЛР 6/7): чёрные притягивают, белые отталкивают.
+        for (const anomaly of anomalies) {
+            const extra = gravityAcceleration(this.x, this.y, anomaly.x, anomaly.y, anomaly.mass);
+            const sign = anomaly.type === 'white' ? -1 : 1;
+            this.vx += extra.x * sign;
+            this.vy += extra.y * sign;
+        }
 
         this.x += this.vx;
         this.y += this.vy;

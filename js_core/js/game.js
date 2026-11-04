@@ -5,6 +5,7 @@
 
 import { CONFIG } from './config.js';
 import { Ball, Paddle } from './bodies.js';
+import { Field, Zone } from './field.js';
 import { State, StateMachine } from './state.js';
 
 export class Game {
@@ -13,13 +14,17 @@ export class Game {
      */
     constructor(level) {
         this.level = level;
-        this.hole = { x: level.black_hole.x, y: level.black_hole.y };
-        this.mass = level.black_hole.mass;
+        this.field = new Field(level);      // где что находится на поле
+        this.hole = this.field.hole;
+        this.mass = this.field.mass;
 
         this.ball = new Ball();
         this.left = new Paddle(level.paddle_margin, CONFIG.HEIGHT / 2 - CONFIG.PADDLE_HEIGHT / 2);
         this.right = new Paddle(level.window.width - level.paddle_margin - CONFIG.PADDLE_WIDTH,
                                 CONFIG.HEIGHT / 2 - CONFIG.PADDLE_HEIGHT / 2);
+
+        // Аномалии поля из панели ЛР 6: чёрные притягивают, белые отталкивают.
+        this.anomalies = [];
 
         this.fsm = new StateMachine(State.MENU);
         this.leftScore = 0;
@@ -63,7 +68,7 @@ export class Game {
         if (input.rightUp) this.right.moveUp();
         if (input.rightDown) this.right.moveDown();
 
-        const bounced = this.ball.update(this.mass, this.hole);
+        const bounced = this.ball.update(this.mass, this.hole, this.anomalies);
         if (bounced) this.pushEvent('wall-bounce');
 
         // Отскок от ракеток: меняем только горизонтальную скорость, как в ЛР 1.
@@ -83,13 +88,14 @@ export class Game {
             return;
         }
 
-        // Мяч за линией ворот.
-        if (this.ball.x < 0) {
+        // Мяч за линией ворот (зоны поля спрашиваем у Field, а не считаем вручную).
+        const zone = this.field.locate(this.ball.x, this.ball.y, this.ball.radius);
+        if (zone === Zone.LEFT_GOAL) {
             this.rightScore += 1;
             this.goals += 1;
             this.pushEvent('goal', { side: 'right', speed: this.ball.speed });
             this.ball.reset();
-        } else if (this.ball.x > this.level.window.width) {
+        } else if (zone === Zone.RIGHT_GOAL) {
             this.leftScore += 1;
             this.goals += 1;
             this.pushEvent('goal', { side: 'left', speed: this.ball.speed });

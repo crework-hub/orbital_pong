@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#05060f">
+    <title>Orbital Pong Arcade — аномалии</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="site-shell">
+        <header class="site-header">
+            <a class="brand" href="index.html">
+                <span class="brand-mark" aria-hidden="true"></span>
+                Orbital Pong Arcade
+            </a>
+            <button class="burger" id="burger" type="button"
+                    aria-expanded="false" aria-controls="site-nav" aria-label="Меню">
+                <span></span>
+            </button>
+            <nav class="site-nav" id="site-nav" aria-label="Основная навигация">
+                <a href="index.html">Аркада</a>
+                <a href="anomalies.html" aria-current="page">Аномалии</a>
+                <a href="rules.html">Правила</a>
+                <a href="../crud/index.html">Админка</a>
+            </nav>
+        </header>
+
+        <main class="site-main">
+            <section class="panel">
+                <h2>Аномалии поля</h2>
+                <p>
+                    Список читается из того же localStorage, что и панель администратора
+                    (ключ <code>orbital_pong_anomalies</code>). Добавили дыру в админке —
+                    она появилась здесь, никакой пересборки сайта не нужно.
+                </p>
+                <div class="cards-grid" id="cards"></div>
+            </section>
+        </main>
+
+        <aside class="site-side">
+            <section class="panel">
+                <h2>Что даёт тип</h2>
+                <p><b>Чёрная дыра</b> притягивает мяч силой <code>F = G·M/(d²+eps²)</code> — та же формула, что у центральной.</p>
+                <p><b>Белая дыра</b> отталкивает: сила считается по той же формуле, но вектор разворачивается.</p>
+                <p>Масса задаёт силу, координаты — точку на поле 800×600.</p>
+            </section>
+            <section class="panel hide-mobile">
+                <h2>Коротко</h2>
+                <p>Включить аномалию в партии можно на <a href="index.html">главной</a>: клик по карточке в панели справа.</p>
+            </section>
+        </aside>
+
+        <footer class="site-footer">
+            <span>Игра — <a href="rules.html">правила</a>, сущности — <a href="anomalies.html">аномалии</a>, редактор — <a href="../crud/index.html">админка</a>.</span>
+            <span>Ядро физики ЛР 4 · виджет ЛР 5 · хранилище ЛР 6 · сайт ЛР 7</span>
+        </footer>
+    </div>
+
+    <script type="module" src="js/anomalies.js"></script>
+</body>
+</html>

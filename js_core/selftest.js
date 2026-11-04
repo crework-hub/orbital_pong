@@ -14,6 +14,7 @@ import { Ball, Paddle } from './js/bodies.js';
 import { State, StateMachine } from './js/state.js';
 import { loadLevelFromText, validateLevel, DEFAULT_LEVEL } from './js/level.js';
 import { Game } from './js/game.js';
+import { Field, Zone } from './js/field.js';
 
 let passed = 0;
 let failed = 0;
@@ -99,6 +100,25 @@ check('порог ворот: x < 0 и x > width', behindGoalLine(-1) && behindG
 check('angleDelta сглаживает переход через 180°',
       Math.abs(angleDelta(Math.PI - 0.1, -Math.PI + 0.1) - 0.2) < 1e-9);
 
+// ---------- 2b. Дополнительные аномалии ----------
+group('2b. Дополнительные аномалии (ЛР 6/7)');
+
+const pullBall = new Ball(200, 300);
+const pullBase = pullBall.vx;
+pullBall.update(0, { x: 400, y: 300 }, [{ x: 300, y: 300, mass: 10, type: 'black' }]);
+check('чёрная аномалия притягивает мяч', pullBall.vx > pullBase && pullBall.vx > 0,
+      `vx=${pullBall.vx.toFixed(2)}`);
+
+const pushBall = new Ball(200, 300);
+pushBall.vx = 0;
+pushBall.vy = 0;
+pushBall.update(0, { x: 400, y: 300 }, [{ x: 300, y: 300, mass: 10, type: 'white' }]);
+check('белая аномалия отталкивает мяч', pushBall.vx < 0, `vx=${pushBall.vx.toFixed(2)}`);
+
+const neutralBall = new Ball(200, 300);
+neutralBall.update(0, { x: 400, y: 300 }, []);
+check('без аномалий поведение не меняется', neutralBall.vx === 6, `vx=${neutralBall.vx}`);
+
 // ---------- 3. Сущности ----------
 group('3. Мяч и ракетка');
 
@@ -160,6 +180,26 @@ const outside = validateLevel({ ...LEVEL, black_hole: { x: 9999, y: 300, mass: 1
 check('дыра вне поля возвращается в центр',
       outside.level.black_hole.x === 400 && outside.errors.length === 1);
 
+// ---------- 5b. Игровое поле ----------
+group('5b. Игровое поле: зоны и стены');
+
+const field = new Field(validateLevel(LEVEL).level);
+check('центр поля — обычная точка', field.locate(200, 200) === Zone.FIELD);
+check('точка в дыре опознаётся', field.locate(400, 300) === Zone.HOLE);
+check('мяч у верхней стены — TOP_WALL', field.locate(200, 5) === Zone.TOP_WALL);
+check('мяч у нижней стены — BOTTOM_WALL', field.locate(200, 595) === Zone.BOTTOM_WALL);
+check('мяч за левым краем — гол', field.locate(-1, 300) === Zone.LEFT_GOAL);
+check('мяч за правым краем — гол', field.locate(801, 300) === Zone.RIGHT_GOAL);
+check('расстояние до дыры считается', Math.abs(field.distanceToHole(400, 400) - 100) < 1e-9,
+      `${field.distanceToHole(400, 400)}`);
+
+const edgeBall = new Ball(200, 3);
+edgeBall.vy = -4;
+check('Field.bounceWalls отражает мяч от потолка', field.bounceWalls(edgeBall) === true &&
+      edgeBall.vy > 0 && edgeBall.y === edgeBall.radius, `y=${edgeBall.y}, vy=${edgeBall.vy}`);
+check('Field.bounceWalls не трогает мяч в центре поля',
+      field.bounceWalls(new Ball(200, 300)) === false);
+
 // ---------- 6. Игровой цикл ----------
 group('6. Игровой цикл и условия конца партии');
 
@@ -193,6 +233,14 @@ holeGame.ball.vy = 0;
 holeGame.step({});
 check('попадание в чёрную дыру фиксируется событием',
       holeGame.events.some((e) => e.type === 'hole-catch'));
+
+const anomalyGame = new Game(validateLevel(LEVEL).level);
+anomalyGame.start();
+anomalyGame.anomalies = [{ x: 300, y: 300, mass: 10, type: 'white' }];
+const anomalyVx = anomalyGame.ball.vx;
+anomalyGame.step({});
+check('Game.step учитывает аномалии поля', anomalyGame.ball.vx !== anomalyVx,
+      `vx ${anomalyVx} → ${anomalyGame.ball.vx.toFixed(2)}`);
 
 // ---------- Итог ----------
 console.log(`\nВсего проверок: ${passed + failed}`);
