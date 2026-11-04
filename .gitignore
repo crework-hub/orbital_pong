@@ -1,0 +1,4 @@
+﻿__pycache__/
+*.pyc
+pong_score.log
+records.csv

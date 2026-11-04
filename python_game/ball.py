@@ -3,14 +3,17 @@ import math
 
 from pathlib import Path
 
-from settings import WIDTH, HEIGHT, CENTER_X, CENTER_Y, GRAVITY, SPRITE_SCALE
+from settings import WIDTH, HEIGHT, CENTER_X, CENTER_Y, SPRITE_SCALE, SERVE_VX, SERVE_VY
 
 ROOT = Path(__file__).resolve().parent.parent
 
 
 class Ball:
 
-    def __init__(self):
+    def __init__(self, gravity, mass=1.0):
+        self.gravity = gravity
+        self.mass = mass
+
         self.x = 200
         self.y = 200
 
@@ -32,10 +35,11 @@ class Ball:
         distance = math.sqrt(dx * dx + dy * dy)
 
         if distance > 10:
-            force = GRAVITY / (distance * distance)
+            force = self.gravity / (distance * distance)
+            acceleration = force / self.mass
 
-            self.vx += force * dx / distance
-            self.vy += force * dy / distance
+            self.vx += acceleration * dx / distance
+            self.vy += acceleration * dy / distance
 
         self.x += self.vx
         self.y += self.vy
@@ -70,5 +74,5 @@ class Ball:
         self.x = WIDTH // 2
         self.y = HEIGHT // 2
 
-        self.vx = 4
-        self.vy = 2
+        self.vx = SERVE_VX
+        self.vy = SERVE_VY

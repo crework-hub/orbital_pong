@@ -2,14 +2,14 @@ import pygame
 
 from pathlib import Path
 
-from settings import HEIGHT, PADDLE_SPEED, SPRITE_SCALE
+from settings import HEIGHT, SPRITE_SCALE
 
 ROOT = Path(__file__).resolve().parent.parent
 
 
 class Paddle:
 
-    def __init__(self, x, y):
+    def __init__(self, x, y, speed):
         self.x = x
         self.y = y
 
@@ -21,7 +21,7 @@ class Paddle:
         self.image = pygame.transform.scale(image, size)
         self.width = self.image.get_width()
         self.height = self.image.get_height()
-        self.speed = PADDLE_SPEED
+        self.speed = speed
 
     def move_up(self):
         self.y -= self.speed

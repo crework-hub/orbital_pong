@@ -1,0 +1,7 @@
+{
+  "window": { "width": 800, "height": 600 },
+  "black_hole": { "x": 400, "y": 300 },
+  "serve": { "vx": 4, "vy": 2 },
+  "paddle_margin": 30,
+  "win_score": 5
+}
