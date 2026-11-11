@@ -15,7 +15,6 @@ ROOT = Path(__file__).resolve().parent.parent
 
 
 class Game:
-
     def __init__(self):
         self.physics = load_physics()
         logger.info("Запуск игры Orbital Pong")
@@ -151,7 +150,6 @@ class Game:
             self.finish_match()
 
     def finish_match(self):
-        # Партия закончена: фиксируем время и просим имя победителя для таблицы рекордов.
         self.match_time = (pygame.time.get_ticks() - self.match_start) / 1000
         self.winner_side = "левый" if self.left_score >= WIN_SCORE else "правый"
         self.player_name = ""
@@ -162,7 +160,6 @@ class Game:
         )
 
     def handle_name_key(self, event):
-        # Ввод имени: Enter сохраняет, Backspace стирает, остальные печатные символы добавляются.
         if event.key in (pygame.K_RETURN, pygame.K_KP_ENTER):
             self.save_result()
         elif event.key == pygame.K_BACKSPACE:

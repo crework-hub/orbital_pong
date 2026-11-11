@@ -9,7 +9,6 @@ ROOT = Path(__file__).resolve().parent.parent
 
 
 class Ball:
-
     def __init__(self, gravity, mass=1.0):
         self.gravity = gravity
         self.mass = mass

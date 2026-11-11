@@ -11,6 +11,7 @@ CONFIG_PATH = ROOT / "physics.cfg"
 DEFAULT_BALL_MASS = 1.0
 
 
+# --- значения физики ---
 @dataclass
 class PhysicsConfig:
     gravity: float = GRAVITY
@@ -19,7 +20,6 @@ class PhysicsConfig:
 
 
 def _read_positive(section, name, default):
-    # Берём число из файла; при ошибке или значении <= 0 оставляем по умолчанию.
     try:
         value = section.getfloat(name, fallback=default)
     except ValueError:
@@ -35,6 +35,7 @@ def _read_positive(section, name, default):
     return value
 
 
+# --- чтение physics.cfg ---
 def load_physics(path=CONFIG_PATH):
     config = PhysicsConfig()
     parser = configparser.ConfigParser()
@@ -44,6 +45,10 @@ def load_physics(path=CONFIG_PATH):
     except configparser.Error as error:
         print(f"physics.cfg: ошибка разбора ({error}), беру значения по умолчанию")
         logger.error("physics.cfg: ошибка разбора (%s), взяты значения по умолчанию", error)
+        return config
+    except (OSError, UnicodeDecodeError) as error:
+        print(f"Не удалось прочитать physics.cfg ({error}), беру значения по умолчанию")
+        logger.error("Не удалось прочитать physics.cfg: %s, взяты значения по умолчанию", error)
         return config
 
     if not found:

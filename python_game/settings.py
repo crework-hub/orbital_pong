@@ -1,7 +1,7 @@
 from level_loader import load_level
 
-# Параметры арены берутся из level.json (если файла нет или он неверный,
-# level_loader вернёт уровень по умолчанию).
+
+# --- из level.json ---
 _LEVEL = load_level()
 
 WIDTH = _LEVEL["window"]["width"]
@@ -21,6 +21,7 @@ SERVE_VY = _LEVEL["serve"]["vy"]
 PADDLE_MARGIN = _LEVEL["paddle_margin"]
 WIN_SCORE = _LEVEL["win_score"]
 
+# --- запасные значения ---
 GRAVITY = 500
 
 PADDLE_SPEED = 6

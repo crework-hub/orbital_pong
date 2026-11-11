@@ -7,7 +7,6 @@ from settings import WIDTH, HEIGHT, CENTER_X, CENTER_Y, WHITE
 
 
 class Trail:
-
     def __init__(self):
         self.points = []
         self.max_points = 15
@@ -28,7 +27,6 @@ class Trail:
 
 
 class SpaceDust:
-
     def __init__(self):
         self.particles = [self._create() for _ in range(40)]
         self.sprites = {}
@@ -75,7 +73,6 @@ class SpaceDust:
 
 
 class Inflow:
-
     def __init__(self):
         self.particles = [self._create() for _ in range(36)]
 

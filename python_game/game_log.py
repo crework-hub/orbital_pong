@@ -6,9 +6,8 @@ ROOT = Path(__file__).resolve().parent.parent
 LOG_PATH = ROOT / "pong_score.log"
 
 
+# --- логгер ---
 def _create_logger():
-    # Логгер пишет в pong_score.log: каждая строка начинается с даты и времени
-    # (с миллисекундами), затем идут уровень события и текст.
     log = logging.getLogger("orbital_pong")
     if log.handlers:
         return log
@@ -19,7 +18,6 @@ def _create_logger():
     try:
         handler = logging.FileHandler(LOG_PATH, mode="a", encoding="utf-8")
     except OSError as error:
-        # Нет прав на запись и т.п.: игра должна работать и без лога.
         print(f"Не удалось открыть лог {LOG_PATH}: {error}")
         log.addHandler(logging.NullHandler())
         return log
@@ -37,9 +35,8 @@ def _create_logger():
 logger = _create_logger()
 
 
+# --- голы ---
 def log_goal(scorer, left_score, right_score, vx, vy):
-    # Задание варианта 15: время гола, счёт и скорость мяча в момент
-    # пересечения линии ворот. Время добавляет сам logging.
     speed = math.hypot(vx, vy)
     logger.info(
         "ГОЛ: забил %s игрок | счёт %d:%d | скорость мяча %.2f px/кадр (vx=%.2f, vy=%.2f)",

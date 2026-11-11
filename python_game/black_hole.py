@@ -118,7 +118,6 @@ def load_aseprite_frames(path):
 
 
 class BlackHole:
-
     def __init__(self):
         self.x = CENTER_X
         self.y = CENTER_Y

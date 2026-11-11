@@ -8,7 +8,6 @@ ROOT = Path(__file__).resolve().parent.parent
 
 
 class Paddle:
-
     def __init__(self, x, y, speed):
         self.x = x
         self.y = y

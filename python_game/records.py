@@ -10,16 +10,14 @@ RECORDS_PATH = ROOT / "records.csv"
 FIELDS = ["Дата", "Имя", "Счёт", "Время партии, сек"]
 
 
+# --- запись ---
 def save_record(name, score_text, duration_sec, path=RECORDS_PATH):
-    # Дописывает результат партии в CSV. При первом запуске (файла нет или он пустой)
-    # сначала пишет строку с заголовками. Возвращает True, если запись удалась.
     first_run = not path.exists() or path.stat().st_size == 0
 
     try:
-        # Режим "a" дописывает в конец и не стирает старые результаты.
-        # newline="" нужен модулю csv, иначе в Windows появятся пустые строки.
-        with open(path, "a", newline="", encoding="utf-8") as file:
-            writer = csv.writer(file)
+        encoding = "utf-8-sig" if first_run else "utf-8"
+        with open(path, "a", newline="", encoding=encoding) as file:
+            writer = csv.writer(file, delimiter=";")
             if first_run:
                 writer.writerow(FIELDS)
             writer.writerow([
@@ -37,17 +35,16 @@ def save_record(name, score_text, duration_sec, path=RECORDS_PATH):
     return True
 
 
+# --- чтение ---
 def load_top(limit=5, path=RECORDS_PATH):
-    # Возвращает limit самых быстрых побед: список словарей. Нет файла - пустой список.
     rows = []
 
     try:
-        with open(path, "r", newline="", encoding="utf-8") as file:
-            for row in csv.DictReader(file):
+        with open(path, "r", newline="", encoding="utf-8-sig") as file:
+            for row in csv.DictReader(file, delimiter=";"):
                 try:
                     row["_time"] = float(row[FIELDS[3]])
                 except (KeyError, TypeError, ValueError):
-                    # Строка повреждена: пропускаем её, остальные читаем дальше.
                     logger.warning("Пропущена повреждённая строка в %s: %s", path.name, row)
                     continue
                 rows.append(row)

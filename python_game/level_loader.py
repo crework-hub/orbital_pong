@@ -7,8 +7,8 @@ from game_log import logger
 ROOT = Path(__file__).resolve().parent.parent
 LEVEL_PATH = ROOT / "level.json"
 
-# Уровень по умолчанию: используется, если файла нет, он повреждён
-# или в нём неверные значения.
+
+# --- уровень по умолчанию ---
 DEFAULT_LEVEL = {
     "window": {"width": 800, "height": 600},
     "black_hole": {"x": 400, "y": 300},
@@ -18,9 +18,8 @@ DEFAULT_LEVEL = {
 }
 
 
+# --- проверка полей ---
 def _pick(raw, path, low, high, problems, integer=False):
-    # Достаём значение по пути ("window", "width") и проверяем тип и диапазон.
-    # Если что-то не так, возвращаем значение по умолчанию и запоминаем проблему.
     default = DEFAULT_LEVEL
     for key in path:
         default = default[key]
@@ -33,7 +32,6 @@ def _pick(raw, path, low, high, problems, integer=False):
             return default
         node = node[key]
 
-    # bool в Python тоже число (True == 1), поэтому отдельно его отсекаем.
     if isinstance(node, bool) or not isinstance(node, (int, float)):
         problems.append(f"поле '{name}' должно быть числом")
         return default
@@ -50,7 +48,6 @@ def _pick(raw, path, low, high, problems, integer=False):
 
 
 def validate_level(raw):
-    # Возвращает (готовый уровень, список проблем).
     problems = []
     level = copy.deepcopy(DEFAULT_LEVEL)
 
@@ -67,7 +64,6 @@ def validate_level(raw):
     level["paddle_margin"] = _pick(raw, ("paddle_margin",), 0, 200, problems, True)
     level["win_score"] = _pick(raw, ("win_score",), 1, 20, problems, True)
 
-    # Чёрная дыра обязана быть внутри окна, иначе центр притяжения окажется за экраном.
     width = level["window"]["width"]
     height = level["window"]["height"]
     hole = level["black_hole"]
@@ -79,8 +75,8 @@ def validate_level(raw):
     return level, problems
 
 
+# --- загрузка ---
 def load_level(path=LEVEL_PATH):
-    # Загружает level.json. Любая ошибка не роняет игру: берём уровень по умолчанию.
     try:
         with open(path, "r", encoding="utf-8") as file:
             raw = json.load(file)
