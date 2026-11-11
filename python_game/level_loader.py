@@ -18,61 +18,39 @@ DEFAULT_LEVEL = {
 }
 
 
-# --- проверка полей ---
-def _pick(raw, path, low, high, problems, integer=False):
-    default = DEFAULT_LEVEL
-    for key in path:
-        default = default[key]
-
-    name = ".".join(path)
-    node = raw
-    for key in path:
-        if not isinstance(node, dict) or key not in node:
-            problems.append(f"нет поля '{name}'")
-            return default
-        node = node[key]
-
-    if isinstance(node, bool) or not isinstance(node, (int, float)):
-        problems.append(f"поле '{name}' должно быть числом")
-        return default
-
-    if integer and node != int(node):
-        problems.append(f"поле '{name}' должно быть целым")
-        return default
-
-    if not low <= node <= high:
-        problems.append(f"поле '{name}' вне диапазона {low}..{high}")
-        return default
-
-    return int(node) if integer else node
-
-
+# --- проверка ---
 def validate_level(raw):
-    problems = []
-    level = copy.deepcopy(DEFAULT_LEVEL)
-
-    if not isinstance(raw, dict):
-        problems.append("корень файла должен быть объектом JSON")
-        return level, problems
-
-    level["window"]["width"] = _pick(raw, ("window", "width"), 400, 1920, problems, True)
-    level["window"]["height"] = _pick(raw, ("window", "height"), 300, 1080, problems, True)
-    level["black_hole"]["x"] = _pick(raw, ("black_hole", "x"), 0, 1920, problems, True)
-    level["black_hole"]["y"] = _pick(raw, ("black_hole", "y"), 0, 1080, problems, True)
-    level["serve"]["vx"] = _pick(raw, ("serve", "vx"), 1, 15, problems)
-    level["serve"]["vy"] = _pick(raw, ("serve", "vy"), -15, 15, problems)
-    level["paddle_margin"] = _pick(raw, ("paddle_margin",), 0, 200, problems, True)
-    level["win_score"] = _pick(raw, ("win_score",), 1, 20, problems, True)
+    try:
+        level = {
+            "window": {
+                "width": int(raw["window"]["width"]),
+                "height": int(raw["window"]["height"]),
+            },
+            "black_hole": {
+                "x": int(raw["black_hole"]["x"]),
+                "y": int(raw["black_hole"]["y"]),
+            },
+            "serve": {
+                "vx": float(raw["serve"]["vx"]),
+                "vy": float(raw["serve"]["vy"]),
+            },
+            "paddle_margin": int(raw["paddle_margin"]),
+            "win_score": int(raw["win_score"]),
+        }
+    except (KeyError, TypeError, ValueError):
+        return None
 
     width = level["window"]["width"]
     height = level["window"]["height"]
+    if width < 400 or height < 300 or level["win_score"] < 1:
+        return None
+
     hole = level["black_hole"]
     if not (0 < hole["x"] < width and 0 < hole["y"] < height):
-        problems.append("чёрная дыра вне окна, ставлю её в центр")
         hole["x"] = width // 2
         hole["y"] = height // 2
 
-    return level, problems
+    return level
 
 
 # --- загрузка ---
@@ -81,23 +59,19 @@ def load_level(path=LEVEL_PATH):
         with open(path, "r", encoding="utf-8") as file:
             raw = json.load(file)
     except FileNotFoundError:
-        print(f"Файл уровня {path.name} не найден. Используется уровень по умолчанию.")
+        print(f"{path.name} не найден, беру уровень по умолчанию")
         logger.warning("Файл уровня не найден: %s, взят уровень по умолчанию", path)
         return copy.deepcopy(DEFAULT_LEVEL)
-    except json.JSONDecodeError as error:
-        print(f"Файл уровня {path.name} повреждён ({error}). Используется уровень по умолчанию.")
+    except (OSError, ValueError) as error:
+        print(f"{path.name} повреждён ({error}), беру уровень по умолчанию")
         logger.error("Файл уровня повреждён (%s), взят уровень по умолчанию", error)
         return copy.deepcopy(DEFAULT_LEVEL)
-    except (OSError, UnicodeDecodeError) as error:
-        print(f"Не удалось прочитать {path.name}: {error}. Используется уровень по умолчанию.")
-        logger.error("Не удалось прочитать файл уровня: %s", error)
+
+    level = validate_level(raw)
+    if level is None:
+        print(f"{path.name}: неверные значения, беру уровень по умолчанию")
+        logger.warning("level.json: неверные значения, взят уровень по умолчанию")
         return copy.deepcopy(DEFAULT_LEVEL)
-
-    level, problems = validate_level(raw)
-
-    for problem in problems:
-        print(f"{path.name}: {problem}")
-        logger.warning("level.json: %s", problem)
 
     logger.info(
         "Уровень загружен: окно %dx%d, дыра (%d, %d), до %d очков",
