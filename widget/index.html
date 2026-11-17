@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Orbital Pong — виджет</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <h1>Orbital Pong</h1>
+
+    <main class="layout">
+        <section>
+            <canvas id="game" width="800" height="600"></canvas>
+            <p class="hint">
+                <kbd>W</kbd> <kbd>S</kbd> или <kbd>↑</kbd> <kbd>↓</kbd> или мышь — левая ракетка ·
+                <kbd>Space</kbd> старт · <kbd>R</kbd> рестарт
+            </p>
+        </section>
+
+        <aside>
+            <section class="panel">
+                <h2>Показатели</h2>
+                <dl class="hud">
+                    <dt>Скорость мяча</dt><dd><span id="hud-speed">0.00</span> px/кадр</dd>
+                    <dt>Счёт</dt><dd id="hud-score">0 : 0</dd>
+                    <dt>Состояние</dt><dd id="hud-state" data-state="MENU">меню</dd>
+                    <dt>Масса дыры</dt><dd id="hud-mass">10</dd>
+                    <dt>Сила у мяча</dt><dd id="hud-gravity">0.00</dd>
+                    <dt>Кадры</dt><dd><span id="hud-fps">0</span> fps</dd>
+                </dl>
+            </section>
+
+            <section class="panel">
+                <h2>Сценарии</h2>
+                <div class="buttons">
+                    <button type="button" data-scenario="restart">Новая партия</button>
+                    <button type="button" data-scenario="setMass" data-arg="12">Масса 12</button>
+                    <button type="button" data-scenario="setMass" data-arg="3">Масса 3</button>
+                    <button type="button" data-scenario="setVisibility" data-arg="200">Видимость 200</button>
+                    <button type="button" data-scenario="setVisibility" data-arg="1000">Видимость 1000</button>
+                    <button type="button" data-scenario="toggleRings">Кольца</button>
+                    <button type="button" data-scenario="slowMotion" data-arg="0.5">Время ×0.5</button>
+                    <button type="button" data-scenario="slowMotion" data-arg="1">Время ×1</button>
+                    <button type="button" data-scenario="fastBall" data-arg="2">Мяч быстрее</button>
+                    <button type="button" data-scenario="toggleAI">Автопилот</button>
+                    <button type="button" data-scenario="showEvents">События</button>
+                </div>
+                <p class="hint">Из консоли: <code>OP.run('setMass', 12)</code>, <code>OP.list()</code>, <code>OP.info()</code></p>
+                <pre id="scenario-log" class="log"></pre>
+            </section>
+        </aside>
+    </main>
+
+    <script type="module" src="js/widget.js"></script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+export const CONFIG = {
+    WIDTH: 800,
+    HEIGHT: 600,
+
+    GRAVITY: 500,
+    BALL_MASS: 1.0,
+    HOLE_RADIUS: 10,
+    SOFTENING: 6,
+
+    PADDLE_SPEED: 6,
+    PADDLE_WIDTH: 16,
+    PADDLE_HEIGHT: 100,
+    PADDLE_MARGIN: 30,
+
+    SERVE_VX: 4,
+    SERVE_VY: 2,
+    BALL_RADIUS: 8,
+    MAX_BALL_SPEED: 30,
+    WIN_SCORE: 5,
+};
+
+export const MAX_FORCE = (mass) => (CONFIG.GRAVITY * mass) / CONFIG.SOFTENING ** 2;

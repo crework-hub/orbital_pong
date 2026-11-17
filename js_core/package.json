@@ -1,0 +1,9 @@
+{
+  "name": "orbital-pong-core",
+  "version": "1.0.0",
+  "description": "Ядро Orbital Pong на JavaScript (ЛР 4)",
+  "type": "module",
+  "scripts": {
+    "test": "node selftest.js"
+  }
+}

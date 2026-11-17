@@ -1,0 +1,125 @@
+:root {
+    --bg: #05060f;
+    --panel: #0d1124;
+    --line: #243056;
+    --text: #e6f0ff;
+    --muted: #8a9bc7;
+    --accent: #7ad9ff;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 16px;
+    background: var(--bg);
+    color: var(--text);
+    font-family: system-ui, sans-serif;
+}
+
+h1 {
+    margin: 0 0 12px;
+    font-size: 24px;
+}
+
+h2 {
+    margin: 0 0 10px;
+    font-size: 15px;
+    color: var(--accent);
+}
+
+.layout {
+    display: grid;
+    grid-template-columns: minmax(0, 800px) 320px;
+    gap: 16px;
+    align-items: start;
+}
+
+canvas {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    cursor: crosshair;
+}
+
+.panel {
+    margin-bottom: 16px;
+    padding: 14px;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+}
+
+.hud {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 6px 10px;
+    margin: 0;
+}
+
+.hud dt {
+    color: var(--muted);
+}
+
+.hud dd {
+    margin: 0;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+}
+
+#hud-state[data-state="PLAY"] { color: #5dffa8; }
+#hud-state[data-state="OVER"] { color: #ff6b81; }
+
+.buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+}
+
+button {
+    padding: 8px;
+    color: var(--text);
+    background: #151c38;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    border-color: var(--accent);
+}
+
+.hint {
+    color: var(--muted);
+    font-size: 13px;
+}
+
+kbd, code {
+    padding: 1px 5px;
+    background: #151c38;
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    font-size: 12px;
+}
+
+.log {
+    height: 140px;
+    margin: 0;
+    padding: 8px;
+    overflow-y: auto;
+    background: #070914;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: pre-wrap;
+}
+
+@media (max-width: 1150px) {
+    .layout {
+        grid-template-columns: 1fr;
+    }
+}
