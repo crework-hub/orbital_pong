@@ -27,7 +27,7 @@ function group(title) {
 
 const LEVEL = validateLevel({
     window: { width: 800, height: 600 },
-    black_hole: { x: 400, y: 300, mass: 10 },
+    black_hole: { x: 400, y: 300, mass: 1 },
     paddle_margin: 30,
     win_score: 5,
 }).level;
@@ -182,6 +182,29 @@ hit.step({});
 check('отскок от ракетки меняет vx и пишет событие',
       hit.ball.vx > 0 && hit.events.some((e) => e.type === 'paddle-hit' && e.side === 'left'));
 
+check('правая ракетка (ИИ) медленнее игрока', hit.right.speed === CONFIG.AI_SPEED && hit.left.speed > hit.right.speed);
+check('массу дыры по умолчанию задаёт уровень', hit.mass === 1 && DEFAULT_LEVEL.black_hole.mass === CONFIG.HOLE_MASS);
+
+const spin = new Game(LEVEL);
+spin.start();
+spin.ball.x = spin.left.x + spin.left.width + 2;
+spin.ball.y = spin.left.rect.centerY + 30;
+spin.ball.vx = -4;
+spin.ball.vy = 0;
+spin.step({});
+check('удар ниже центра ракетки отклоняет мяч вниз', spin.ball.vy > 1, `vy=${spin.ball.vy.toFixed(2)}`);
+
+const serveGame = new Game(LEVEL);
+serveGame.start();
+let serveMinD = Infinity;
+for (let i = 0; i < 400; i += 1) {
+    serveGame.step({});
+    serveMinD = Math.min(serveMinD, serveGame.field.distanceToHole(serveGame.ball.x, serveGame.ball.y));
+    if (serveGame.ball.x > serveGame.field.width / 2 + 50) break;
+}
+check('подача проходит мимо дыры, а не в неё', serveMinD > 40 && serveGame.events.every((e) => e.type !== 'hole-catch'),
+      `мин. расстояние ${serveMinD.toFixed(0)} px`);
+
 const goal = new Game(LEVEL);
 goal.start();
 goal.left.y = 0;
@@ -191,7 +214,7 @@ goal.ball.vx = -20;
 goal.ball.vy = 0;
 goal.step({});
 check('мяч за левыми воротами — очко правому', goal.rightScore === 1 && goal.leftScore === 0);
-check('после гола подача заново', goal.ball.x === 200 && goal.ball.y === 300);
+check('после гола подача заново (слева сверху, мимо дыры)', goal.ball.x === 200 && goal.ball.y === 150);
 
 const catcher = new Game(LEVEL);
 catcher.start();
@@ -227,6 +250,7 @@ match.start();
 for (let i = 0; i < 5; i += 1) {
     match.ball.x = -5;
     match.ball.y = 20;
+    match.ball.vx = -3;
     match.step({});
     if (match.state === State.OVER) break;
 }

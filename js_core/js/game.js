@@ -17,6 +17,7 @@ export class Game {
         this.left = new Paddle(level.paddle_margin, top, this.field.height);
         this.right = new Paddle(this.field.width - level.paddle_margin - CONFIG.PADDLE_WIDTH,
                                 top, this.field.height);
+        this.right.speed = CONFIG.AI_SPEED;
         this.ball = new Ball();
         this.serve();
 
@@ -33,7 +34,7 @@ export class Game {
     }
 
     serve() {
-        this.ball.reset(this.field.width / 4, this.field.height / 2);
+        this.ball.reset(this.field.width / 4, this.field.height / 4);
         this.lastHit = null;
     }
 
@@ -73,11 +74,13 @@ export class Game {
 
         if (ball.rect.colliderect(this.left.rect) && ball.vx < 0) {
             ball.vx = Math.abs(ball.vx);
+            ball.vy += (ball.y - this.left.rect.centerY) * CONFIG.PADDLE_SPIN;
             this.lastHit = 'left';
             this.pushEvent('paddle-hit', { side: 'left', y: ball.y });
         }
         if (ball.rect.colliderect(this.right.rect) && ball.vx > 0) {
             ball.vx = -Math.abs(ball.vx);
+            ball.vy += (ball.y - this.right.rect.centerY) * CONFIG.PADDLE_SPIN;
             this.lastHit = 'right';
             this.pushEvent('paddle-hit', { side: 'right', y: ball.y });
         }

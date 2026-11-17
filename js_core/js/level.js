@@ -2,7 +2,7 @@ import { CONFIG } from './config.js';
 
 export const DEFAULT_LEVEL = Object.freeze({
     window: { width: CONFIG.WIDTH, height: CONFIG.HEIGHT },
-    black_hole: { x: CONFIG.WIDTH / 2, y: CONFIG.HEIGHT / 2, mass: 10 },
+    black_hole: { x: CONFIG.WIDTH / 2, y: CONFIG.HEIGHT / 2, mass: CONFIG.HOLE_MASS },
     paddle_margin: CONFIG.PADDLE_MARGIN,
     win_score: CONFIG.WIN_SCORE,
 });

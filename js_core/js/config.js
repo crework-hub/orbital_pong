@@ -8,14 +8,17 @@ export const CONFIG = {
     SOFTENING: 6,
 
     PADDLE_SPEED: 6,
+    AI_SPEED: 4,
     PADDLE_WIDTH: 16,
     PADDLE_HEIGHT: 100,
     PADDLE_MARGIN: 30,
 
-    SERVE_VX: 4,
-    SERVE_VY: 2,
+    SERVE_VX: 7,
+    SERVE_VY: 1,
+    PADDLE_SPIN: 0.08,
     BALL_RADIUS: 8,
     MAX_BALL_SPEED: 30,
+    HOLE_MASS: 1,
     WIN_SCORE: 5,
 };
 

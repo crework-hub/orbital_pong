@@ -3,7 +3,7 @@ import { gravityForce } from '../../js_core/js/physics.js';
 
 const BG = '#05060f';
 const RING_RADII = [30, 70, 110, 150, 190, 230, 270, 310];
-const REFERENCE_FORCE = gravityForce(10, RING_RADII[0]);
+const REFERENCE_FORCE = gravityForce(1, RING_RADII[0]);
 
 export function makeStars(count, width, height) {
     const stars = [];
