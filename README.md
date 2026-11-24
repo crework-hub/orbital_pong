@@ -1,4 +1,4 @@
-# Orbital Pong
+﻿# Orbital Pong
 ## «Орбитальный Понг»
 
 Orbital Pong — это пинг-понг на двоих. По центру поля стоит чёрная дыра. Она притягивает мяч, поэтому он летит не по прямой, а по дуге.
@@ -13,6 +13,7 @@ Orbital Pong — это пинг-понг на двоих. По центру п�
 - **Pygame-ce 2.5.8** — окно, отрисовка, клавиатура и звук
 - **aiogram 3.x** и **Pillow** — Telegram-бот (ЛР 3), см. `py_bot/README.md`
 - **JavaScript (ES-модули)**, **Node.js 18+** и **HTML5 Canvas** — ядро (ЛР 4) и виджет (ЛР 5)
+- **HTML, CSS и JavaScript** (без сборщика), **LocalStorage** — панель CRUD (ЛР 6), см. `crud/README.md`
 
 ---
 
@@ -41,6 +42,7 @@ orbital_pong/
 ├── py_bot/              # ЛР 3: Telegram-бот (см. py_bot/README.md)
 ├── js_core/             # ЛР 4: ядро игры на JavaScript (см. js_core/README.md)
 ├── widget/              # ЛР 5: веб-виджет на Canvas (см. widget/README.md)
+├── crud/                # ЛР 6: панель «Космические аномалии» (см. crud/README.md)
 ├── level.json           # уровень (арена)
 ├── physics.cfg          # настройки физики
 ├── ball.png
